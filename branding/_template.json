@@ -1,0 +1,38 @@
+{
+  "id": "customer-slug",
+  "productName": "Customer Media Browser",
+  "appId": "com.yourco.qsys.customer-slug",
+  "version": "1.0.0",
+  "_credentials": "For a protected Core, create <id>.secret.json alongside this file - see _template.secret.example.json. Never inline them here; this file is committed.",
+  "core": {
+    "host": "192.168.1.100",
+    "port": 443,
+    "accessMode": "protected"
+  },
+  "rootFolder": "",
+  "allowRootEscape": false,
+  "features": {
+    "upload": true,
+    "download": true,
+    "delete": true,
+    "rename": true,
+    "move": true,
+    "createFolder": true,
+    "preview": true,
+    "playlists": true,
+    "devTools": false
+  },
+  "theme": {
+    "mode": "dark",
+    "colors": {
+      "primary": "#3B82F6",
+      "surface": "#0E1116"
+    },
+    "logo": "assets/customer-slug/logo.svg",
+    "icon": "assets/customer-slug/icon.png"
+  },
+  "window": {
+    "width": 1180,
+    "height": 760
+  }
+}

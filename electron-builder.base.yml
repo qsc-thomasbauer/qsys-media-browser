@@ -1,0 +1,61 @@
+# Shared electron-builder configuration.
+#
+# Per-customer values (productName, appId, icon, output directory) are merged
+# over this by scripts/build-customer.ts, so this file stays free of anything
+# customer-specific.
+directories:
+  buildResources: build
+
+files:
+  - out/**/*
+  - package.json
+  - '!**/*.map'
+
+# Nothing needs to sit outside the archive, and an unpacked directory is one
+# more place a credential blob could be read from without even opening the asar.
+asar: true
+
+# Builds must be reproducible from a config alone, so never reach for the
+# network to guess at metadata.
+electronDownload:
+  cache: .electron-cache
+
+# Portable rather than an installer: customer machines are frequently locked
+# down, and a single .exe sidesteps the need for admin rights entirely.
+win:
+  target:
+    - target: portable
+      arch: [x64]
+  # Left unsigned deliberately. Add a certificate here per customer if you have
+  # one; without it SmartScreen will warn on first run.
+  signAndEditExecutable: true
+
+portable:
+  artifactName: ${productName} ${version}.${ext}
+  # Fresh temp dir per launch; nothing is left behind on a shared machine.
+  requestExecutionLevel: user
+  unpackDirName: false
+
+mac:
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+  category: public.app-category.utilities
+  # A Core's self-signed certificate is reached through Node's https from the
+  # main process, so no additional entitlements are required.
+  hardenedRuntime: true
+  gatekeeperAssess: false
+
+dmg:
+  artifactName: ${productName} ${version}.${ext}
+
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  category: AudioVideo
+  synopsis: File browser for Q-SYS Core media
+
+publish: null

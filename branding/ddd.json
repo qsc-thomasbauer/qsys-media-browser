@@ -1,0 +1,38 @@
+{
+  "id": "ddd",
+  "productName": "Doo Doo Dynamics Meeting Browser",
+  "appId": "com.yourco.qsys.ddd",
+  "version": "1.0.0",
+  "core": {
+    "host": "192.168.177.21",
+    "port": 443,
+    "accessMode": "open"
+  },
+  "rootFolder": "",
+  "allowRootEscape": false,
+  "features": {
+    "upload": true,
+    "download": true,
+    "delete": true,
+    "rename": true,
+    "move": true,
+    "createFolder": true,
+    "preview": true,
+    "playlists": true,
+    "devTools": false
+  },
+  "theme": {
+    "mode": "light",
+    "colors": {
+      "primary": "#552E0D",
+      "surface": "#FFFCF7",
+      "accent": "#B0710F"
+    },
+    "logo": "assets/ddd/logo.svg",
+    "icon": "assets/ddd/icon.png"
+  },
+  "window": {
+    "width": 1180,
+    "height": 760
+  }
+}

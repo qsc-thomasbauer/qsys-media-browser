@@ -1,0 +1,38 @@
+{
+  "id": "demo",
+  "productName": "Q-SYS Media Browser (Demo)",
+  "appId": "com.yourco.qsys.demo",
+  "version": "1.0.0",
+  "core": {
+    "host": "127.0.0.1",
+    "port": 8443,
+    "accessMode": "protected"
+  },
+  "rootFolder": "",
+  "allowRootEscape": true,
+  "features": {
+    "upload": true,
+    "download": true,
+    "delete": true,
+    "rename": true,
+    "move": true,
+    "createFolder": true,
+    "preview": true,
+    "playlists": true,
+    "devTools": true
+  },
+  "theme": {
+    "mode": "dark",
+    "colors": {
+      "primary": "#4F8DF7",
+      "surface": "#0D1117",
+      "accent": "#3FD68C"
+    },
+    "logo": "assets/demo/logo.svg",
+    "icon": "assets/demo/icon.png"
+  },
+  "window": {
+    "width": 1220,
+    "height": 800
+  }
+}

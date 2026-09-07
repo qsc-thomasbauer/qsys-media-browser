@@ -1,0 +1,38 @@
+{
+  "id": "acme",
+  "productName": "ACME Audio Manager",
+  "appId": "com.yourco.qsys.acme",
+  "version": "1.0.0",
+  "core": {
+    "host": "127.0.0.1",
+    "port": 8444,
+    "accessMode": "protected"
+  },
+  "rootFolder": "Messages/ACME",
+  "allowRootEscape": false,
+  "features": {
+    "upload": true,
+    "download": true,
+    "delete": true,
+    "rename": true,
+    "move": true,
+    "createFolder": true,
+    "preview": true,
+    "playlists": false,
+    "devTools": false
+  },
+  "theme": {
+    "mode": "light",
+    "colors": {
+      "primary": "#B0122B",
+      "surface": "#F7F5F2",
+      "accent": "#C87F0A"
+    },
+    "logo": "assets/acme/logo.svg",
+    "icon": "assets/acme/icon.png"
+  },
+  "window": {
+    "width": 1120,
+    "height": 740
+  }
+}

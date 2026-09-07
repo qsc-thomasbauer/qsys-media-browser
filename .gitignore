@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Build output
+out/
+dist/
+# Per-customer generated icons. `build/` itself is kept so electron-builder has
+# a buildResources directory; the customer subdirectories are regenerated.
+build/*/
+!build/.gitkeep
+
+# TypeScript incremental build state (the tsconfigs use composite: true)
+*.tsbuildinfo
+
+# Caches
+.vite/
+.electron-cache/
+coverage/
+.eslintcache
+
+# Local fixtures and state produced by scripts/mock-core.ts
+.mock-media/
+.mock-state/
+
+# Screenshots written by scripts/drive.mjs
+.shots/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Secrets.
+#
+# Customer configs are committed; their credentials are not. A password in a
+# committed file is in every clone and fork of this repository for good, so the
+# schema rejects an inline `credentials` block and the loader reads these
+# sidecars instead. `_template.secret.example.json` is deliberately named to
+# fall outside this rule so there is a committed example.
+branding/*.secret.json
+.env
+.env.*
+!.env.example
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

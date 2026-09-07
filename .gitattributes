@@ -1,0 +1,19 @@
+# Normalise line endings.
+#
+# Development happens on Windows but the CI matrix builds on Linux and macOS
+# too. Without this, every checkout rewrites line endings and diffs fill with
+# whole-file changes.
+* text=auto eol=lf
+
+# Binary assets, so git neither diffs nor converts them.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.icns binary
+*.wav binary
+*.mp3 binary
+*.flac binary
+
+# Generated; collapse it in pull requests.
+package-lock.json linguist-generated=true -diff

@@ -1,0 +1,101 @@
+# Per-customer builds across all three platforms.
+#
+# The matrix exists because electron-builder cannot cross-build: a notarized
+# .dmg needs macOS, and AppImage needs Linux. Each runner therefore produces
+# only its own target, and the artifacts are collected per customer.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      customer:
+        description: 'Customer slug to build, or "all"'
+        required: false
+        default: 'all'
+
+jobs:
+  # Fail fast on things that need no platform: types, tests, and every
+  # customer config's schema and contrast validation.
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  build:
+    needs: check
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: win
+          - os: macos-latest
+            target: mac
+          - os: ubuntu-latest
+            target: linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Credentials never enter the repository - the `branding/*.secret.json`
+      # sidecars are gitignored - so CI supplies them per customer. Add one
+      # secret pair per customer, named after the slug in upper snake case:
+      #
+      #   QSYS_CRED_ACME_USERNAME / QSYS_CRED_ACME_PASSWORD
+      #   QSYS_CRED_DDD_USERNAME  / QSYS_CRED_DDD_PASSWORD
+      #
+      # A customer whose Core is in `open` access mode needs no pair at all.
+      - name: Build every customer
+        if: ${{ github.event.inputs.customer == 'all' || github.event.inputs.customer == '' }}
+        run: npm run build:all -- --${{ matrix.target }}
+        env:
+          QSYS_CRED_ACME_USERNAME: ${{ secrets.QSYS_CRED_ACME_USERNAME }}
+          QSYS_CRED_ACME_PASSWORD: ${{ secrets.QSYS_CRED_ACME_PASSWORD }}
+          QSYS_CRED_DEMO_USERNAME: ${{ secrets.QSYS_CRED_DEMO_USERNAME }}
+          QSYS_CRED_DEMO_PASSWORD: ${{ secrets.QSYS_CRED_DEMO_PASSWORD }}
+          QSYS_CRED_DDD_USERNAME: ${{ secrets.QSYS_CRED_DDD_USERNAME }}
+          QSYS_CRED_DDD_PASSWORD: ${{ secrets.QSYS_CRED_DDD_PASSWORD }}
+
+      - name: Build one customer
+        if: ${{ github.event.inputs.customer != 'all' && github.event.inputs.customer != '' }}
+        run: npm run build:customer ${{ github.event.inputs.customer }} -- --${{ matrix.target }}
+        env:
+          # The unsuffixed pair is the single-customer fallback.
+          QSYS_CRED_USERNAME: ${{ secrets.QSYS_CRED_USERNAME }}
+          QSYS_CRED_PASSWORD: ${{ secrets.QSYS_CRED_PASSWORD }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qsys-media-browser-${{ matrix.target }}
+          # Only the installers and archives, not the unpacked trees.
+          path: |
+            dist/*/*.exe
+            dist/*/*.dmg
+            dist/*/*.AppImage
+            dist/*/*.deb
+          if-no-files-found: error
+          retention-days: 30
+
+# Signing, when you have certificates, goes here as encrypted secrets:
+#
+#   windows: CSC_LINK / CSC_KEY_PASSWORD
+#   macOS:   CSC_LINK / CSC_KEY_PASSWORD, plus APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD
+#            and APPLE_TEAM_ID for notarization
+#
+# Until then the artifacts are unsigned and SmartScreen/Gatekeeper will warn on
+# first run.

@@ -1,0 +1,137 @@
+@import 'tailwindcss';
+
+/*
+ * Every colour utility resolves to a runtime custom property rather than a
+ * literal. `applyTheme` writes those properties onto :root at startup from the
+ * customer's palette, so `bg-surface-1` means "this customer's raised surface"
+ * and no component ever contains a hex value.
+ *
+ * The fallbacks exist only so the app is legible if a stylesheet somehow loads
+ * before the theme is applied; in practice main.tsx sets the properties before
+ * React's first render.
+ */
+@theme {
+  --color-surface-0: var(--surface-0, #0d1117);
+  --color-surface-1: var(--surface-1, #161b22);
+  --color-surface-2: var(--surface-2, #21262d);
+  --color-surface-3: var(--surface-3, #2d333b);
+
+  --color-line: var(--border, #30363d);
+  --color-line-strong: var(--border-strong, #484f58);
+
+  --color-ink: var(--text, #e6edf3);
+  --color-ink-muted: var(--text-muted, #9aa4af);
+  --color-ink-faint: var(--text-faint, #6e7781);
+
+  --color-brand: var(--primary, #4f8df7);
+  --color-brand-hover: var(--primary-hover, #6b9ff9);
+  --color-brand-active: var(--primary-active, #3d7ce4);
+  --color-brand-subtle: var(--primary-subtle, #16243a);
+  --color-brand-ink: var(--primary-fg, #ffffff);
+
+  --color-accent: var(--accent, #3fd68c);
+  --color-accent-subtle: var(--accent-subtle, #10281d);
+  --color-accent-ink: var(--accent-fg, #04150c);
+
+  --color-danger: var(--danger, #f2555a);
+  --color-danger-hover: var(--danger-hover, #f56e72);
+  --color-danger-subtle: var(--danger-subtle, #2e1416);
+  --color-danger-ink: var(--danger-fg, #ffffff);
+
+  --color-ring: var(--ring, #4f8df7);
+
+  --font-sans:
+    'Segoe UI Variable Text', 'Segoe UI', Inter, system-ui, -apple-system, 'Helvetica Neue',
+    sans-serif;
+  --font-mono: 'Cascadia Mono', 'SF Mono', Consolas, 'Liberation Mono', monospace;
+}
+
+@layer base {
+  * {
+    /* Nothing in a desktop file browser should be selectable by accident;
+       inputs and the few text surfaces opt back in explicitly. */
+    user-select: none;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-surface-0);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  input,
+  textarea {
+    user-select: text;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 1px;
+  }
+
+  /* A scrollbar that belongs to the theme rather than to the OS default. */
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-faint);
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+@utility drag-none {
+  -webkit-user-drag: none;
+}
+
+/* Indeterminate progress, used while a transfer has no content-length. */
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.animate-indeterminate {
+  animation: indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 120ms ease-out;
+}

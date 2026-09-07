@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 28" width="168" height="28" role="img" aria-label="ACME Audio Manager">
+  <rect x="2" y="4" width="20" height="20" rx="4.5" fill="#B0122B" />
+  <path d="M8.5 18.5 12 9.5l3.5 9M9.8 15.6h4.4" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="29" y="14" font-family="Segoe UI, Inter, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="currentColor">ACME</text>
+  <text x="29" y="25" font-family="Segoe UI, Inter, system-ui, sans-serif" font-size="9.5" font-weight="500" fill="#B0122B" letter-spacing="1.4">AUDIO MANAGER</text>
+</svg>
